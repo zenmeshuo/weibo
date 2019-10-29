@@ -91,4 +91,16 @@ class UsersController extends Controller
 
           return redirect()->route('users.show', $user);
       }
+
+      public function destroy(User $user)
+      {
+          try {
+              $this->authorize('destroy', $user);
+          } catch (AuthorizationException $e) {
+              return abort(403, '无权访问');
+          }
+          $user->delete();
+          session()->flash('success', '成功删除用户！');
+          return back();
+      }
 }

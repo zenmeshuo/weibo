@@ -26,4 +26,16 @@ class StatuesController extends Controller
         session()->flash('success', '发布成功！');
         return redirect()->back();
     }
+
+    public function destroy(Status $status)
+    {
+        try {
+            $this->authorize('destroy', $status);
+        } catch (AuthorizationException $e) {
+            return abort(403, '无权访问');
+        }
+        $status->delete();
+        session()->flash('success', '微博已被成功删除！');
+        return redirect()->back();
+    }
 }
